@@ -1,0 +1,3 @@
+<?php
+//000000000000a:5:{s:5:"TITLE";s:12:"伤心天地";s:3:"URL";s:11:"jishuai.com";s:9:"PAGE_SIZE";s:1:"2";s:11:"UPLOAD_SIZE";s:8:"31457208";s:6:"TONGJI";s:255:"&lt;script&gt; var _hmt = _hmt || []; (function() {   var hm = document.createElement(&quot;script&quot;);   hm.src = &quot;https://hm.baidu.com/hm.js?283d0c19c1845742e403da19f589b920&quot;;   var s = document.getElementsByTagName(&quot;script&quot;)[0]; ";}
+?>
