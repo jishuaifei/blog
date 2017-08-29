@@ -26,11 +26,17 @@
 </video>
 <div class="video_mask"></div>
 <div class="login">
-    <h1>邮箱</h1></p>
-    <form class="layui-form" action="<?php echo U('User/find');?>" method="post" id="form">
+    <h1>密码修改</h1></p>
+    <form class="layui-form" action="<?php echo U('User/daAdd');?>" method="post" id="form">
         <div class="layui-form-item">
-            <input type="text" name="user_email"   autocomplete="off" id="user_email" value="" class="layui-input">
+            <input type="password" name="psd"   autocomplete="off" id="psd" value="" class="layui-input">
         </div>
+        <div class="layui-form-item">
+            <input type="password" name="pwd"   autocomplete="off" id="pwd" value="" class="layui-input">
+        </div>
+        <input type="hidden" name="user_email" value="<?php echo ($email); ?>"/>
+        <input type="hidden" name="time" value="<?php echo ($tima); ?>"/>
+        <input type="hidden" name="token" value="<?php echo ($token); ?>"/>
         <input type="submit" value="提交" class="layui-btn login_btn" lay-submit="" lay-filter="login"/>
     </form>
 </div>
@@ -40,23 +46,21 @@
 
     $('#form').validate({
                 rules:{
-                    user_email:{
+                    psd:{
+                        required:true
+                    },
+                    pwd:{
                         required:true,
-                        remote:{
-                            url: "<?php echo U('User/doAdd');?>",
-                            type:'post',
-                            data: {
-                                classify_name: function () {
-                                    return $("#user_email").val();
-                                }
-                            }
-                        }
+                        equalTo: '#psd'
                     }
                 },
                 messages:{
-                    user_email:{
-                        required:'请输入邮箱',
-                        remote:'你输入的邮箱不对'
+                    psd:{
+                        required:'请输入密码'
+                    },
+                    pwd:{
+                        required:'请输入密码',
+                        equalTo: "两次输入密码不一致"
                     }
                 },
                 //重写错误信心，提示

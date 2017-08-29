@@ -41,16 +41,7 @@ class UserController extends  CommonController {
         }
 
     }
-    /*
-     * find
-     * 找回密码
-     * **/
-    public function find()
-    {
-        $config = config();
-        $this->assign('config',$config);
-        $this->display();
-    }
+
     /*
      * add
      * 添加用户名
@@ -144,5 +135,82 @@ class UserController extends  CommonController {
         }else{
             echo 'true';
         }
+    }
+      /*
+     * find
+     * 找回密码
+     * **/
+    public function find()
+    {
+        if(IS_POST){
+            $email = I('post.user_email');
+            $res = email($email);
+            if($res == true){
+                $this->success('请查收邮箱',U('User/find'));
+
+            }else{
+                $this->error('发送失败');
+            }
+        }else{
+            $config = config();
+            $this->assign('config',$config);
+            $this->display();
+        }
+
+    }
+
+    /*
+     * doAdd
+     * 判断找回的邮箱
+     * **/
+    public function doAdd()
+    {
+        $email = I('post.user_email');
+        $res = M('User')->where(['user_email'=>$email])->find();
+        if($res){
+           echo 'true';
+        }else{
+            echo 'false';
+        }
+    }
+    /*
+     * daAdd
+     * 通过邮箱找回密码
+     * **/
+    public function daAdd()
+    {
+        $email = I('param.user_email','');
+        $time = I('param.time','');
+        $token = I('param.token','');
+        if(IS_POST){
+            var_dump($email);
+            var_dump($time);
+            var_dump($token);
+            //判断接过来的值在加密算一下
+            $add = psd_Add($time,$email);
+            //获取当前时间邮箱15分钟有效
+            if($add != $token){
+                $this->error('小子不要乱动东西！');
+            }
+            $ti = time();
+            if($ti - $time > 900){
+                $this->error('给你发的邮箱已过期',U('User/find'));
+            }
+          $psd = I('post.psd');
+               $res = M('User')->where(['user_email'=>$email])->save(['user_pwd'=>md5($psd)]);
+            if($res){
+                $this->success('修改成功',U('User/wait'));
+            }else{
+                $this->error('修改失败');
+            }
+        }else{
+            $config = config();
+            $this->assign('email',$email);
+            $this->assign('tima',$time);
+            $this->assign('token',$token);
+            $this->assign('config',$config);
+            $this->display();
+        }
+
     }
 }
